@@ -1,0 +1,13 @@
+.DS_Store
+/.srv/*
+!/.srv/custom.ini
+!/.srv/.gitkeep
+.idea
+*.log
+**/.DS_Store
+plugin/vendor
+plugin/assets
+plugin/node_modules
+theme/vendor
+theme/assets
+theme/node_modules
