@@ -32,7 +32,8 @@ docker-compose down
 ### WordPress 🌍
 - Accessible at `http://localhost:8000`
 - WordPress files are in `.srv/wordpress`
-- Theme is located in `./theme-classic`
+- Theme is located in `./theme`
+- Plugin is located in `./plugin`
 
 ### phpMyAdmin 📊
 - Accessible at `http://localhost:8181`
