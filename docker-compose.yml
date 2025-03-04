@@ -1,0 +1,61 @@
+# docker-compose up -d
+# docker-compose up -d --build
+# docker-compose down
+services:
+  mysql:
+    image: mysql:${MYSQL_VER}
+    restart: no
+    ports:
+      - 3310:3306
+    volumes:
+      - ./.srv/database:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS}
+      MYSQL_DATABASE: ${PROJECT_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+
+  wordpress:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        WP_VER: ${WP_VER}
+    restart: no
+    depends_on:
+      - mysql
+      - mailhog
+    links:
+      - mysql
+      - mailhog
+    ports:
+      - 8000:80
+    environment:
+      WORDPRESS_DB_HOST: mysql:3306
+      WORDPRESS_DB_USER: ${DB_USER}
+      WORDPRESS_DB_PASSWORD: ${DB_PASS}
+      WORDPRESS_DB_NAME: ${PROJECT_NAME}
+      WORDPRESS_DEBUG: ${WP_DEBUG}
+      WORDPRESS_TABLE_PREFIX: ${WP_DB_PREFIX}
+    volumes:
+      - ./.srv/wordpress:/var/www/html
+      - ./theme:/var/www/html/wp-content/themes/${PROJECT_NAME}
+      - ./plugin/:/var/www/html/wp-content/plugins/${PLUGIN_NAME}
+      - ./.srv/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - mysql
+    links:
+      - mysql
+    ports:
+      - 8181:80
+    environment:
+      MYSQL_USERNAME: ${DB_USER}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS}
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - 1025:1025
+      - 8025:8025

@@ -46,11 +46,14 @@ docker-compose down
 To ensure proper functionality, create a `.env` file and add the following variables: 
 
 ```env
+PROJECT_NAME=myproject
+PLUGIN_NAME=myplugin
+
 MYSQL_VER=latest
 DB_ROOT_PASS=rootpassword
-PROJECT_NAME=myproject
 DB_USER=wpuser
 DB_PASS=wppassword
+
 WP_VER=latest
 WP_DEBUG=1
 WP_DB_PREFIX=wp_
